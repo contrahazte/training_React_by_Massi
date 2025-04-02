@@ -2,6 +2,8 @@
 
 
 export const routes = [
-  { },
+  { path: '', title: '', element:
+    ""
+   },
 
 ];
