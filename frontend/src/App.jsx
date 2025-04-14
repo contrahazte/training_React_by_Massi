@@ -11,10 +11,12 @@ import UpdateItem from "./screens/updateItem";
 import Login from "./screens/Login";
 import "../src/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
+import { FormProvider } from "./contexts/FormContext";
 
 function App() {
   return (
     <AuthProvider>
+      <FormProvider>
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -26,6 +28,7 @@ function App() {
           <Route path="/item/:id/update" element={<UpdateItem />} />
         </Routes>
       </Layout>
+      </FormProvider>
     </AuthProvider>
   );
 }
