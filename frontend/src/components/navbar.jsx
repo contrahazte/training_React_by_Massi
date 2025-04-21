@@ -1,13 +1,23 @@
-// src/components/Navbar.jsx
-import React from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-const Navbar = () => (
-  <nav style={{ padding: "10px", paddingLeft:"30px",background: "#333", color: "white" }}>
-    <Link to="/home" style={{ marginRight: "15px", color: "white" }}>Home</Link>
-    <Link to="/create" style={{ marginRight: "15px", color: "white" }}>Crear</Link>
-    <Link to="/gallery" style={{ color: "white" }}>Galería</Link>
-  </nav>
-);
-
-export default Navbar;
+export const Navbar = () => {
+  return (
+    <nav className="navbar">
+      <div className="navbar-container">
+        <h1 className="navbar-logo">Mi App</h1>
+        <ul className="navbar-links">
+          <li>
+            <Link to="/home">Home</Link>
+          </li>
+          <li>
+            <Link to="/create/projects-managers">Create</Link>
+          </li>
+          <li>
+            <Link to="/getAll/projects-managers">Get All</Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+};

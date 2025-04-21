@@ -1,35 +1,37 @@
 // src/App.jsx
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./layouts/layout";
-import CreateItemImage from "./screens/CreateItems";
-import CreateItemTitle from "./screens/CreateItemTitle";
-import Home from "./screens/Home";
-import Gallery from "./screens/Gallery";
-import ItemDetail from "./screens/ItemDetails";
-import UpdateItem from "./screens/updateItem";
-import Login from "./screens/Login";
-import "../src/App.css";
-import { AuthProvider } from "./contexts/AuthContext";
-import { FormProvider } from "./contexts/FormContext";
+import { Routes, Route } from "react-router-dom";
+import { Login } from "./screens/Login";
+import { Home } from "./screens/Home";
+import { CreateProjectsManagers } from "./screens/CreateProjectsManagers";
+import { GetAllProjectsManagers } from "./screens/GetAllProjectsManagers";
+import { Layout } from "./layouts/Layout";
+import { UserProvider } from "./contexts/UserContext";
+import "./App.css";
+import { ProjectsManagersProvider } from "./contexts/JefesDeProyectoContext";
+import { UpdateProjectsManagers } from "./screens/UpdateProjectsManagers";
+import { DetailProjectsManager } from "./screens/DetailProjectsManagers";
 
 function App() {
   return (
-    <AuthProvider>
-      <FormProvider>
-      <Layout>
+    <UserProvider>
+      <ProjectsManagersProvider>
         <Routes>
+          {/* Ruta sin layout */}
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/create" element={<CreateItemTitle />} />
-          <Route path="/create/image" element={<CreateItemImage />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/item/:id" element={<ItemDetail />} />
-          <Route path="/item/:id/update" element={<UpdateItem />} />
+
+          {/* Rutas con layout */}
+          <Route element={<Layout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/create/projects-managers" element={<CreateProjectsManagers />} />
+            <Route path="/getAll/projects-managers" element={<GetAllProjectsManagers />} />
+            <Route path="/update/projects-managers/:id" element={<UpdateProjectsManagers />} />
+            <Route path="/jefes-proyectos/detail/:id" element={<DetailProjectsManager />} />
+
+          </Route>
         </Routes>
-      </Layout>
-      </FormProvider>
-    </AuthProvider>
+      </ProjectsManagersProvider>
+    </UserProvider>
   );
 }
 

@@ -1,61 +1,67 @@
-// src/pages/Login.jsx
-import React, { useState } from "react";
+import { useState } from "react"
+import { useUserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+export const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { handleSavingLoginData } = useUserContext();
+    const navigate = useNavigate();
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        try {
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
+            const fetching = await fetch("http://localhost:3000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            })
+            if (!fetching.ok) {
+                alert("Somenthing was wrong .Try again later");
+                return;}
 
-  //primero que nada el componente Login crea su función asíncrona que llama a la api
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+                const getingData = await fetching.json();
+                console.log({
+                    mensaje: "Login exitoso",
+                    email:getingData.user.email,
+                    token: getingData.token
+                  });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+                handleSavingLoginData(getingData);
+                navigate("/home")
+            }
 
-      login(data.user, data.token);//login es una funcion que se le pasa el objeto user y el token
-                                   // y lo guarda en el localStorage
 
-      navigate("/gallery");
-    } catch (err) {
-      alert(err.message || "Error de autenticación");
+
+        catch (error) { console.error(error) }
     }
-  };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>Iniciar sesión</h2>
-      <div className="div-inputs-login">
-      <input
-      className="inputs-login"
-        type="email"
-        placeholder="Correo electrónico"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-      className="inputs-login"
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      </div>
+    return (
+        <form onSubmit={handleLogin}>
+            <div>
+                <h2>Ingresa a tu perfil</h2>
 
-      <button type="submit">Ingresar</button>
-    </form>
-  );
+                <label htmlFor="email">Email</label>
+                <input
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <label htmlFor="password">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <br />
+                <button type="submit">Iniciar sesión</button>
+            </div>
+        </form>
+    );
 };
-
-export default Login;

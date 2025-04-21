@@ -1,14 +1,14 @@
-// src/components/Layout.jsx
-import React from "react";
-import Navbar from "../components/navbar";
+import { Outlet } from "react-router-dom";
+import { Navbar } from "../components/Navbar";
 
-const Layout = ({ children }) => {
+export const Layout = ({ children }) => {
   return (
-    <div>
+    <>
       <Navbar />
-      <main style={{ padding: "20px" }}>{children}</main>
-    </div>
+      <main>
+        {children}
+        <Outlet />
+      </main>
+    </>
   );
 };
-
-export default Layout;
